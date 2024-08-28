@@ -22,16 +22,20 @@ jobs:
           project_id: ${{ vars.GOOGLE_CLOUD_PROJECT }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          
+      - uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ vars.GOOGLE_CLOUD_PROJECT }}
 
       - id: deploy
-        uses: google-github-actions/deploy-cloud-functions@v3
-        timeout-minutes: 10
-        with:
-          name: contact-form
-          entry_point: contact_form
-          environment_variables: |-
-            MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }}
-            MAILGUN_DOMAIN_NAME=${{ secrets.MAILGUN_DOMAIN_NAME }}
-          memory: 128Mi
-          region: europe-west2
-          runtime: python312
+        run: |
+          gcloud functions deploy contact-form \
+            --timeout=60 \
+            --memory=128Mi \
+            --set-env-vars=MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }},MAILGUN_DOMAIN_NAME=${{ secrets.MAILGUN_DOMAIN_NAME }} \
+            --trigger-http \
+            --runtime=python312 \
+            --region=europe-west2 \
+            --gen2 \
+            --source=. \
+            --entry-point=contact_form
