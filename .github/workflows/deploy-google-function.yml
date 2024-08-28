@@ -13,18 +13,14 @@ jobs:
       contents: read
       id-token: write
 
-    env:
-      GOOGLE_CLOUD_PROJECT: ${{ vars.GOOGLE_CLOUD_PROJECT }}
-      WORKLOAD_IDENTITY_PROVIDER: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }}
-
     steps:
       - uses: actions/checkout@v4
 
       - id: auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ env.GOOGLE_CLOUD_PROJECT }}
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.GOOGLE_CLOUD_PROJECT }}
 
       - id: deploy
         uses: google-github-actions/deploy-cloud-functions@v3
