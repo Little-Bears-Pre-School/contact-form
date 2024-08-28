@@ -19,9 +19,8 @@ jobs:
       - id: auth
         uses: google-github-actions/auth@v2
         with:
-          project_id: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
-          service_account: ${{ secrets.SERVICE_ACCOUNT }}
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
 
       - id: deploy
         uses: google-github-actions/deploy-cloud-functions@v3
