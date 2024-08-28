@@ -1,0 +1,36 @@
+name: Deploy to Google Cloud Functions
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+
+      - id: deploy
+        uses: google-github-actions/deploy-cloud-functions@v3
+        timeout-minutes: 10
+        with:
+          name: contact-form
+          entry_point: contact_form
+          environment_variable: |-
+            MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }}
+            MAILGUN_DOMAIN_NAME=${{ secrets.MAILGUN_DOMAIN_NAME }}
+          memory: 128Mi
+          region: europe-west2
+          runtime: python312
