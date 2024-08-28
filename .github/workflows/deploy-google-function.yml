@@ -28,7 +28,7 @@ jobs:
         with:
           name: contact-form
           entry_point: contact_form
-          environment_variable: |-
+          environment_variables: |-
             MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }}
             MAILGUN_DOMAIN_NAME=${{ secrets.MAILGUN_DOMAIN_NAME }}
           memory: 128Mi
