@@ -139,16 +139,15 @@ def contact_form(request):
     if request.form.get("title") or request.form.get("middle_name"):
         return redirect("https://little-bears.com/contact-success", code=302)
 
-    sender_email = request.form["email"]
-    sender_name = request.form.get(
-        "full_name",
-        " ".join((request.form['first_name'], request.form['last_name'])),
-    )
+    sender_email = request.form.get("email")
+    sender_name = request.form.get("full_name")
+    if not sender_name:
+        sender_name = " ".join((request.form['first_name'], request.form['last_name']))
     html = TEMPLATE.format(
-        body=request.form["message"],
+        body=request.form.get("message"),
         sender_email=sender_email,
         sender_name=sender_name,
-        phone=request.form["phone"],
+        phone=request.form.get("phone"),
     )
 
     httpx.post(
