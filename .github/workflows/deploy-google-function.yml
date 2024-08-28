@@ -23,20 +23,7 @@ jobs:
           project_id: ${{ vars.GOOGLE_CLOUD_PROJECT }}
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-          
-      - name: Checkout actions-oidc-debugger
-        uses: actions/checkout@v4
-        with:
-          repository: github/actions-oidc-debugger
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: ./.github/actions/actions-oidc-debugger
-          
-      - name: Debug OIDC Claims
-        uses: ./.github/actions/actions-oidc-debugger
-        with:
-          audience: 'projects/296725298347/locations/global/workloadIdentityPools/github/providers/contact-form'
-              
+                  
       - id: deploy
         uses: google-github-actions/deploy-cloud-functions@v3
         timeout-minutes: 10
