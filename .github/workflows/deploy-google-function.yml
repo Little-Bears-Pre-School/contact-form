@@ -23,7 +23,7 @@ jobs:
           service_account: ${{ secrets.SERVICE_ACCOUNT }}
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           
-     - id: deploy
+      - id: deploy
         uses: google-github-actions/deploy-cloud-functions@v3
         timeout-minutes: 10
         with:
