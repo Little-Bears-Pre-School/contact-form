@@ -13,6 +13,9 @@ jobs:
       contents: read
       id-token: write
 
+    env:
+      WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,7 +23,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           project_id: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
-          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
 
       - id: deploy
         uses: google-github-actions/deploy-cloud-functions@v3
