@@ -136,11 +136,14 @@ TEMPLATE = """
 @functions_framework.http
 def contact_form(request):
     # only bots will fill in this honeypot field
-    if request.form.get("middle_name"):
+    if request.form.get("title") or request.form.get("middle_name"):
         return redirect("https://little-bears.com/contact-success", code=302)
 
     sender_email = request.form["email"]
-    sender_name = f"{request.form['first_name']} {request.form['last_name']}"
+    sender_name = request.form.get(
+        "full_name",
+        " ".join((request.form['first_name'], request.form['last_name'])),
+    )
     html = TEMPLATE.format(
         body=request.form["message"],
         sender_email=sender_email,
